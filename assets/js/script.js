@@ -7,6 +7,7 @@ let rollDice = document.querySelector('.btn--roll');
 let current1 = document.getElementById('current--0');
 let player0 = document.querySelector('.player--0');
 let player1 = document.querySelector('.player--1');
+let holdBtn = document.querySelector('.btn--hold');
 
 // initialize the value to zero
 score0.textContent = 0;
@@ -16,6 +17,16 @@ dice.classList.add('hidden');
 let scores = [0,0];
 let current = 0;
 let activePlayer = 0;
+
+//scores[activePlayer]
+
+let switchPlayer = function(){
+    current = 0;
+        document.getElementById(`current--${activePlayer}`).textContent = current;
+        activePlayer = activePlayer === 0? 1: 0;
+        player0.classList.toggle('player--active');
+        player1.classList.toggle('player--active');
+}
 
 // Implement functionality for roll dice button 
 rollDice.addEventListener('click', function(){
@@ -33,11 +44,29 @@ rollDice.addEventListener('click', function(){
         document.getElementById(`current--${activePlayer}`).textContent = current;
         // current1.textContent = current;
     }else{
-        current = 0;
-        document.getElementById(`current--${activePlayer}`).textContent = current;
-        activePlayer = activePlayer === 0? 1: 0;
-        player0.classList.toggle('player--active');
-        player1.classList.toggle('player--active');
+        switchPlayer();
     }
     // 4. if random number is 1 then reset current score to zero and change the active player 
+})
+
+//Implementation hold but functionality
+holdBtn.addEventListener('click',function(){
+    // 1. add current score to global score 
+    scores[activePlayer] += current; //scores[activePlayer] = scores[activePlayer] + current;
+    document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
+
+    //check if the player has already reached maximum score
+    if (scores[activePlayer] >= 100) {
+        // finish the game 
+        document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
+        document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
+        document.getElementById(`name--${activePlayer}`).textContent = 'Winner!'
+        //hide dice image and buttons
+        dice.classList.add('hidden');
+        rollDice.classList.add('hidden');
+        holdBtn.classList.add('hidden');
+        
+    } else {
+        switchPlayer();
+    }
 })
