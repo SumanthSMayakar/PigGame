@@ -5,21 +5,45 @@ let score1 = document.getElementById('score--1');
 let dice = document.querySelector('.dice');
 let rollDice = document.querySelector('.btn--roll');
 let current1 = document.getElementById('current--0');
+let current2 = document.getElementById('current--1');
 let player0 = document.querySelector('.player--0');
 let player1 = document.querySelector('.player--1');
 let holdBtn = document.querySelector('.btn--hold');
+let newGame = document.querySelector('.btn--new')
+let name1 = document.getElementById('name--0');
+let name2 = document.getElementById('name--1');
 
 // initialize the value to zero
-score0.textContent = 0;
-score1.textContent = 0;
-dice.classList.add('hidden');
 
-let scores = [0,0];
-let current = 0;
-let activePlayer = 0;
+let scores;
+let current;
+let activePlayer;
 
 //scores[activePlayer]
 
+function init(){
+    score0.textContent = 0;
+    score1.textContent = 0;
+    current1.textContent = 0;
+    current2.textContent = 0;
+
+    //to remove player winner
+    name1.textContent = "Player 1"
+    name2.textContent = "Player 2"
+    player0.classList.remove('player--winner');
+    player1.classList.remove('player--winner');
+
+    player0.classList.add('player--active');
+    player1.classList.remove('player--active');
+    rollDice.classList.remove('hidden');
+    holdBtn.classList.remove('hidden');
+    dice.classList.add('hidden');
+
+    scores = [0,0];
+    current = 0;
+    activePlayer = 0;
+}
+init();
 let switchPlayer = function(){
     current = 0;
         document.getElementById(`current--${activePlayer}`).textContent = current;
@@ -56,7 +80,7 @@ holdBtn.addEventListener('click',function(){
     document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
 
     //check if the player has already reached maximum score
-    if (scores[activePlayer] >= 100) {
+    if (scores[activePlayer] >= 10) {
         // finish the game 
         document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
         document.querySelector(`.player--${activePlayer}`).classList.remove('player--active');
@@ -70,3 +94,7 @@ holdBtn.addEventListener('click',function(){
         switchPlayer();
     }
 })
+
+//start the New game button
+
+newGame.addEventListener('click',init);
